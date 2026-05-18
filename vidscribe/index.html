@@ -1,186 +1,868 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="canonical" href="https://omotout.com/vidscribe/">
-    <title>VidScribe - Video Description Editor</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: #f5f5f5;
-        }
-        .header {
-            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-            color: white;
-            padding: 60px 20px;
-            text-align: center;
-        }
-        .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-        }
-        .header p {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-        .section {
-            background: white;
-            border-radius: 12px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        .section h2 {
-            color: #6366f1;
-            margin-bottom: 20px;
-            font-size: 1.5rem;
-        }
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-        .feature {
-            padding: 20px;
-            background: #f9f9f9;
-            border-radius: 8px;
-        }
-        .feature h3 {
-            color: #333;
-            margin-bottom: 10px;
-            font-size: 1.1rem;
-        }
-        .feature p {
-            color: #666;
-            font-size: 0.95rem;
-        }
-        .cta-button {
-            display: inline-block;
-            background: #6366f1;
-            color: white;
-            padding: 15px 30px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 1.1rem;
-            transition: background 0.3s;
-        }
-        .cta-button:hover {
-            background: #4f46e5;
-        }
-        .cta-section {
-            text-align: center;
-        }
-        .footer {
-            text-align: center;
-            padding: 30px 20px;
-            background: #333;
-            color: #aaa;
-        }
-        .footer a {
-            color: #fff;
-            text-decoration: none;
-        }
-        .footer a:hover {
-            text-decoration: underline;
-        }
-        .footer-links {
-            margin-top: 15px;
-        }
-        .footer-links a {
-            margin: 0 15px;
-        }
-        ul {
-            margin-left: 20px;
-        }
-        li {
-            margin-bottom: 8px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="canonical" href="https://omotout.com/vidscribe/">
+
+  <title>VidScribe — YouTube 概要欄を一括編集する Chrome 拡張</title>
+  <meta name="description" content="YouTube の概要欄・タイトルを一括で置換・追記できる Chrome 拡張機能。リンク切れ検出、テンプレート、変数、差分プレビュー、実行履歴と復元を全部入り。クリエイターの「全動画一括修正」を 1 クリックに。">
+  <meta name="theme-color" content="#E5232C">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="VidScribe — YouTube 概要欄を一括編集する Chrome 拡張">
+  <meta property="og:description" content="概要欄・タイトルの一括置換、変数付きテンプレート、差分プレビュー、ワンクリック復元。クリエイターの定常作業を 10 倍速に。">
+  <meta property="og:url" content="https://omotout.com/vidscribe/">
+  <meta property="og:site_name" content="VidScribe">
+  <meta property="og:locale" content="ja_JP">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="VidScribe — YouTube 概要欄を一括編集">
+  <meta name="twitter:description" content="概要欄・タイトルの一括置換、変数付きテンプレート、差分プレビュー、ワンクリック復元。">
+
+  <!-- 構造化データ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "VidScribe",
+    "alternateName": "VidScribe for YouTube",
+    "applicationCategory": "BrowserApplication",
+    "operatingSystem": "Chrome",
+    "url": "https://omotout.com/vidscribe/",
+    "description": "YouTube の概要欄・タイトルを一括で置換・追記できる Chrome 拡張機能。テンプレート、変数、差分プレビュー、実行履歴を備える。",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Omotout",
+      "url": "https://omotout.com/"
+    },
+    "downloadUrl": "https://chromewebstore.google.com/detail/youtube-description-edito/mcgdmmehedhgblbakhpncbeegohadmlm"
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --vs-font-sans: "Inter", "Hiragino Kaku Gothic ProN", "Noto Sans JP", system-ui, sans-serif;
+      --vs-font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
+
+      --vs-brand:        #E5232C;
+      --vs-brand-hover:  #C81C24;
+      --vs-brand-press:  #A8161D;
+      --vs-brand-soft:   color-mix(in oklab, #E5232C 12%, transparent);
+      --vs-brand-tint:   color-mix(in oklab, #E5232C 6%, transparent);
+
+      --vs-bg:           #F6F5F2;
+      --vs-surface:      #FFFFFF;
+      --vs-surface-2:    #FAFAF8;
+      --vs-surface-3:    #F2F1EE;
+      --vs-surface-hov:  #EEEDE8;
+      --vs-border:       #E4E2DD;
+      --vs-divider:      #ECEAE5;
+
+      --vs-text:         #14110D;
+      --vs-text-2:       #3A352E;
+      --vs-text-muted:   #6E665B;
+      --vs-text-subtle:  #95897A;
+
+      --vs-focus:        #1F6FEB;
+      --vs-success:      #1F8A5B;
+      --vs-warn:         #B86E00;
+      --vs-warn-soft:    color-mix(in oklab, #B86E00 12%, transparent);
+
+      --vs-r-sm: 6px;
+      --vs-r-md: 10px;
+      --vs-r-lg: 14px;
+      --vs-r-xl: 20px;
+      --vs-r-pill: 999px;
+
+      --vs-sh-sm: 0 1px 2px rgba(20,17,13,.04), 0 1px 3px rgba(20,17,13,.06);
+      --vs-sh-md: 0 4px 12px rgba(20,17,13,.06), 0 2px 4px rgba(20,17,13,.04);
+      --vs-sh-lg: 0 16px 40px rgba(20,17,13,.10), 0 4px 12px rgba(20,17,13,.06);
+
+      --vs-dur: 140ms;
+      --vs-ease: cubic-bezier(.2,.7,.3,1);
+
+      color-scheme: light;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --vs-bg:           #0E0D0B;
+        --vs-surface:      #16140F;
+        --vs-surface-2:    #1B1916;
+        --vs-surface-3:    #232019;
+        --vs-surface-hov:  #2A2620;
+        --vs-border:       #2E2A23;
+        --vs-divider:      #25221C;
+        --vs-text:         #F5F1E8;
+        --vs-text-2:       #D8D2C5;
+        --vs-text-muted:   #9C9285;
+        --vs-text-subtle:  #6F665A;
+        --vs-brand-soft:   color-mix(in oklab, #E5232C 18%, transparent);
+        --vs-brand-tint:   color-mix(in oklab, #E5232C 10%, transparent);
+        --vs-warn-soft:    color-mix(in oklab, #F5A524 14%, transparent);
+        --vs-sh-sm: 0 1px 2px rgba(0,0,0,.4);
+        --vs-sh-md: 0 4px 12px rgba(0,0,0,.5);
+        --vs-sh-lg: 0 16px 40px rgba(0,0,0,.55);
+        color-scheme: dark;
+      }
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+    }
+
+    body {
+      font-family: var(--vs-font-sans);
+      font-size: 16px;
+      line-height: 1.65;
+      color: var(--vs-text);
+      background: var(--vs-bg);
+      font-feature-settings: "ss01", "cv11";
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    a { color: var(--vs-brand); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .vs-tnum { font-variant-numeric: tabular-nums lining-nums; }
+    .vs-mono { font-family: var(--vs-font-mono); }
+
+    .container {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ============ Brand mark ============ */
+    .vs-mark {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      background: var(--vs-brand);
+      color: white;
+      flex: 0 0 32px;
+      position: relative;
+    }
+    .vs-mark::after {
+      content: "";
+      width: 0; height: 0;
+      border-left: 10px solid white;
+      border-top: 7px solid transparent;
+      border-bottom: 7px solid transparent;
+      margin-left: 3px;
+    }
+    .vs-mark.lg { width: 56px; height: 56px; border-radius: 12px; flex-basis: 56px; }
+    .vs-mark.lg::after {
+      border-left-width: 18px; border-top-width: 12px; border-bottom-width: 12px; margin-left: 5px;
+    }
+
+    /* ============ Top nav ============ */
+    .nav {
+      position: sticky; top: 0; z-index: 10;
+      background: color-mix(in oklab, var(--vs-bg) 92%, transparent);
+      backdrop-filter: saturate(140%) blur(10px);
+      border-bottom: 1px solid var(--vs-divider);
+    }
+    .nav-inner {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 0;
+    }
+    .nav-brand {
+      display: inline-flex; align-items: center; gap: 10px;
+      color: var(--vs-text); text-decoration: none;
+      font-weight: 600; font-size: 16px;
+      letter-spacing: -0.01em;
+    }
+    .nav-spacer { flex: 1; }
+    .nav-link {
+      color: var(--vs-text-muted);
+      text-decoration: none;
+      font-size: 14px;
+      padding: 8px 12px;
+      border-radius: var(--vs-r-sm);
+    }
+    .nav-link:hover { color: var(--vs-text); background: var(--vs-surface-hov); text-decoration: none; }
+
+    /* ============ Buttons ============ */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 8px;
+      height: 44px;
+      padding: 0 22px;
+      border: 1px solid transparent;
+      border-radius: var(--vs-r-md);
+      font: 600 14px/1 var(--vs-font-sans);
+      letter-spacing: -0.005em;
+      cursor: pointer;
+      transition: background var(--vs-dur) var(--vs-ease), border-color var(--vs-dur) var(--vs-ease), color var(--vs-dur) var(--vs-ease), transform var(--vs-dur) var(--vs-ease);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .btn:focus-visible { outline: 2px solid var(--vs-focus); outline-offset: 2px; }
+    .btn:active { transform: translateY(0.5px); }
+    .btn-primary {
+      background: var(--vs-brand); color: #fff; border-color: var(--vs-brand);
+    }
+    .btn-primary:hover { background: var(--vs-brand-hover); border-color: var(--vs-brand-hover); text-decoration: none; }
+    .btn-primary:active { background: var(--vs-brand-press); }
+    .btn-secondary {
+      background: var(--vs-surface); color: var(--vs-text); border-color: var(--vs-border);
+    }
+    .btn-secondary:hover { background: var(--vs-surface-hov); text-decoration: none; }
+    .btn .arrow { transition: transform var(--vs-dur) var(--vs-ease); }
+    .btn-primary:hover .arrow { transform: translateX(3px); }
+    .btn.lg { height: 52px; padding: 0 28px; font-size: 15px; }
+
+    /* ============ Hero ============ */
+    .hero {
+      padding: 72px 0 88px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: ""; position: absolute; inset: 0; z-index: -1;
+      background:
+        radial-gradient(ellipse 70% 60% at 50% 0%, var(--vs-brand-tint), transparent 70%);
+    }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 12px;
+      background: var(--vs-brand-soft);
+      color: var(--vs-brand);
+      border-radius: var(--vs-r-pill);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      margin-bottom: 20px;
+    }
+    .hero-eyebrow::before {
+      content: ""; width: 6px; height: 6px; border-radius: 999px; background: currentColor;
+    }
+    .hero h1 {
+      font-size: clamp(32px, 5vw, 52px);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.025em;
+      margin-bottom: 18px;
+      color: var(--vs-text);
+    }
+    .hero h1 .accent { color: var(--vs-brand); }
+    .hero-lede {
+      font-size: clamp(15px, 2vw, 18px);
+      color: var(--vs-text-muted);
+      max-width: 640px;
+      margin: 0 auto 32px;
+      line-height: 1.7;
+    }
+    .hero-actions {
+      display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;
+    }
+
+    /* ============ Mock screen ============ */
+    .mock {
+      max-width: 900px;
+      margin: 56px auto 0;
+      background: var(--vs-surface);
+      border: 1px solid var(--vs-border);
+      border-radius: var(--vs-r-lg);
+      box-shadow: var(--vs-sh-lg);
+      overflow: hidden;
+    }
+    .mock-bar {
+      display: flex; align-items: center; gap: 6px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--vs-divider);
+      background: var(--vs-surface-2);
+    }
+    .mock-dot { width: 10px; height: 10px; border-radius: 999px; background: var(--vs-border-strong, #D5D2CB); }
+    .mock-body {
+      padding: 22px;
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 18px;
+      min-height: 280px;
+    }
+    .mock-side {
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .mock-row {
+      height: 32px; border-radius: var(--vs-r-sm);
+      background: var(--vs-surface-3);
+    }
+    .mock-row.active { background: var(--vs-brand-tint); border-left: 3px solid var(--vs-brand); padding-left: 6px; }
+    .mock-main {
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .mock-card {
+      display: grid;
+      grid-template-columns: 80px 1fr 80px;
+      gap: 12px;
+      align-items: center;
+      padding: 12px;
+      background: var(--vs-surface-2);
+      border: 1px solid var(--vs-border);
+      border-radius: var(--vs-r-sm);
+    }
+    .mock-card.selected { background: var(--vs-brand-tint); }
+    .mock-thumb {
+      aspect-ratio: 16/9;
+      border-radius: 4px;
+      background:
+        repeating-linear-gradient(135deg,
+          color-mix(in oklab, var(--vs-text) 5%, var(--vs-surface-3)) 0 6px,
+          var(--vs-surface-3) 6px 12px);
+    }
+    .mock-title {
+      height: 12px; background: var(--vs-text); opacity: 0.85;
+      border-radius: 3px; margin-bottom: 6px; width: 70%;
+    }
+    .mock-sub {
+      height: 9px; background: var(--vs-text-subtle); opacity: 0.4;
+      border-radius: 3px; width: 45%;
+    }
+    .mock-chip {
+      justify-self: end;
+      padding: 3px 9px;
+      background: var(--vs-brand-soft);
+      color: var(--vs-brand);
+      font-family: var(--vs-font-mono);
+      font-size: 11px;
+      border-radius: var(--vs-r-pill);
+      font-weight: 600;
+    }
+
+    /* ============ Sections ============ */
+    section.block {
+      padding: 64px 0;
+      border-top: 1px solid var(--vs-divider);
+    }
+    .block-eyebrow {
+      font-size: 11px; font-weight: 600;
+      color: var(--vs-text-subtle);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    .block-h2 {
+      font-size: clamp(24px, 3vw, 32px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+      margin-bottom: 12px;
+      text-align: center;
+      color: var(--vs-text);
+    }
+    .block-lede {
+      font-size: 15px;
+      color: var(--vs-text-muted);
+      text-align: center;
+      max-width: 580px;
+      margin: 0 auto 44px;
+      line-height: 1.7;
+    }
+
+    /* ============ Features ============ */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+    .feature {
+      background: var(--vs-surface);
+      border: 1px solid var(--vs-border);
+      border-radius: var(--vs-r-lg);
+      padding: 24px;
+      transition: transform var(--vs-dur) var(--vs-ease), box-shadow var(--vs-dur) var(--vs-ease);
+    }
+    .feature:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--vs-sh-md);
+    }
+    .feature-icon {
+      width: 36px; height: 36px;
+      border-radius: var(--vs-r-md);
+      background: var(--vs-brand-soft);
+      color: var(--vs-brand);
+      display: inline-flex; align-items: center; justify-content: center;
+      margin-bottom: 14px;
+    }
+    .feature h3 {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: var(--vs-text);
+      margin-bottom: 6px;
+    }
+    .feature p {
+      font-size: 13.5px;
+      color: var(--vs-text-muted);
+      line-height: 1.65;
+    }
+
+    /* ============ How it works ============ */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+      counter-reset: step;
+    }
+    .step {
+      background: var(--vs-surface);
+      border: 1px solid var(--vs-border);
+      border-radius: var(--vs-r-lg);
+      padding: 24px;
+      position: relative;
+      counter-increment: step;
+    }
+    .step::before {
+      content: counter(step, decimal-leading-zero);
+      position: absolute;
+      top: 20px; right: 20px;
+      font-family: var(--vs-font-mono);
+      font-size: 13px;
+      color: var(--vs-text-subtle);
+      font-weight: 600;
+    }
+    .step h3 {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: var(--vs-text);
+      margin-bottom: 8px;
+      padding-right: 32px;
+    }
+    .step p {
+      font-size: 13.5px;
+      color: var(--vs-text-muted);
+      line-height: 1.65;
+    }
+
+    /* ============ Pricing ============ */
+    .plans {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .plan {
+      background: var(--vs-surface);
+      border: 1px solid var(--vs-border);
+      border-radius: var(--vs-r-lg);
+      padding: 28px;
+      display: flex; flex-direction: column; gap: 16px;
+    }
+    .plan.featured {
+      border-color: var(--vs-brand);
+      box-shadow: var(--vs-sh-md);
+      position: relative;
+    }
+    .plan-tag {
+      position: absolute; top: -10px; left: 24px;
+      padding: 3px 10px;
+      background: var(--vs-brand);
+      color: #fff;
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.04em;
+      border-radius: var(--vs-r-pill);
+    }
+    .plan-name { font-size: 14px; font-weight: 600; color: var(--vs-text); }
+    .plan-price {
+      font-size: 32px; font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--vs-text);
+      font-variant-numeric: tabular-nums lining-nums;
+      line-height: 1;
+    }
+    .plan-price small {
+      font-size: 13px; font-weight: 500;
+      color: var(--vs-text-muted);
+      margin-left: 4px;
+    }
+    .plan ul {
+      list-style: none; padding: 0;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .plan li {
+      font-size: 13.5px;
+      color: var(--vs-text-2);
+      display: flex; align-items: baseline; gap: 8px;
+    }
+    .plan li::before {
+      content: "✓";
+      color: var(--vs-success);
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    /* ============ Privacy ============ */
+    .privacy-card {
+      background: var(--vs-surface);
+      border: 1px solid var(--vs-border);
+      border-radius: var(--vs-r-lg);
+      padding: 32px;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .privacy-card ul {
+      list-style: none; padding: 0;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .privacy-card li {
+      font-size: 14px;
+      color: var(--vs-text-2);
+      display: flex; align-items: baseline; gap: 10px;
+    }
+    .privacy-card li::before {
+      content: "→";
+      color: var(--vs-brand);
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+    .privacy-link {
+      display: inline-block;
+      margin-top: 18px;
+      color: var(--vs-brand);
+      font-weight: 500;
+    }
+
+    /* ============ CTA section ============ */
+    .cta-block {
+      text-align: center;
+      padding: 80px 0;
+      background:
+        radial-gradient(ellipse 70% 100% at 50% 50%, var(--vs-brand-tint), transparent 60%);
+    }
+    .cta-block .block-h2 { margin-bottom: 18px; }
+
+    /* ============ Footer ============ */
+    .footer {
+      padding: 32px 0;
+      border-top: 1px solid var(--vs-divider);
+      background: var(--vs-surface-2);
+    }
+    .footer-inner {
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 16px; flex-wrap: wrap;
+      font-size: 12px;
+      color: var(--vs-text-subtle);
+    }
+    .footer-links {
+      display: flex; gap: 18px;
+    }
+    .footer-links a { color: var(--vs-text-muted); text-decoration: none; }
+    .footer-links a:hover { color: var(--vs-text); }
+    .footer .made {
+      font-family: var(--vs-font-mono);
+      font-variant-numeric: tabular-nums lining-nums;
+    }
+
+    @media (max-width: 720px) {
+      .nav-link { display: none; }
+      .nav-link.cta { display: inline-flex; }
+      .mock-body { grid-template-columns: 1fr; }
+      .mock-side { display: none; }
+      .mock-card { grid-template-columns: 64px 1fr 60px; }
+    }
+  </style>
 </head>
 <body>
-    <div class="header">
-        <h1>✏️ VidScribe</h1>
-        <p>Bulk edit video descriptions with ease. Save time with find & replace functionality.</p>
-    </div>
 
+  <!-- Nav -->
+  <header class="nav">
+    <div class="container nav-inner">
+      <a href="#top" class="nav-brand">
+        <span class="vs-mark" aria-hidden="true"></span>
+        <span>VidScribe</span>
+      </a>
+      <span class="nav-spacer"></span>
+      <a class="nav-link" href="#features">機能</a>
+      <a class="nav-link" href="#how">使い方</a>
+      <a class="nav-link" href="#pricing">料金</a>
+      <a class="nav-link cta btn btn-primary" style="height:36px;padding:0 16px;font-size:13px"
+         href="https://chromewebstore.google.com/detail/youtube-description-edito/mcgdmmehedhgblbakhpncbeegohadmlm">
+        Chrome に追加
+      </a>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section id="top" class="hero">
     <div class="container">
-        <section class="section">
-            <h2>✨ Features</h2>
-            <div class="features">
-                <div class="feature">
-                    <h3>📝 Bulk Editing</h3>
-                    <p>Select multiple videos and update their descriptions all at once.</p>
-                </div>
-                <div class="feature">
-                    <h3>🔍 Find & Replace</h3>
-                    <p>Quickly replace text across all your video descriptions.</p>
-                </div>
-                <div class="feature">
-                    <h3>📋 Add Text</h3>
-                    <p>Append or prepend text to descriptions for consistent branding.</p>
-                </div>
-                <div class="feature">
-                    <h3>⚡ Fast & Secure</h3>
-                    <p>Works directly with the API. Your data stays in your browser.</p>
-                </div>
-            </div>
-        </section>
+      <span class="hero-eyebrow">Chrome 拡張機能 · v1.0.7</span>
+      <h1>YouTube の概要欄を<br><span class="accent">1 クリックで一括編集</span></h1>
+      <p class="hero-lede">
+        全動画の概要欄やタイトルを、置換・追加・削除で一気に整える。
+        テンプレートと変数で「次の動画にも使い回せる」フォーマットを資産化。
+        実行前の差分プレビュー＋自動スナップショットで、ミスしても 30 日以内なら戻せます。
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary lg"
+           href="https://chromewebstore.google.com/detail/youtube-description-edito/mcgdmmehedhgblbakhpncbeegohadmlm">
+          Chrome に追加 — 無料
+          <svg class="arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+        <a class="btn btn-secondary lg" href="#features">機能を見る</a>
+      </div>
 
-        <section class="section">
-            <h2>🔐 How It Works</h2>
-            <ul>
-                <li><strong>Sign in with Google:</strong> Securely authenticate with your account using OAuth 2.0</li>
-                <li><strong>Select Videos:</strong> Choose which videos you want to edit from your channel</li>
-                <li><strong>Edit Descriptions:</strong> Use bulk editing or find & replace</li>
-                <li><strong>Save Changes:</strong> Update your video descriptions with one click</li>
-            </ul>
-        </section>
-
-        <section class="section">
-            <h2>🛡️ Privacy & Security</h2>
-            <p>We take your privacy seriously:</p>
-            <ul>
-                <li>No personal data is collected or stored on external servers</li>
-                <li>Authentication is handled securely through Google's OAuth 2.0</li>
-                <li>All data processing happens locally in your browser</li>
-                <li>We only request the minimum permissions needed to edit descriptions</li>
-            </ul>
-            <p style="margin-top: 15px;">
-                <a href="privacy-policy.html">Read our full Privacy Policy →</a>
-            </p>
-        </section>
-
-        <section class="section cta-section">
-            <h2>Get Started Today</h2>
-            <p style="margin-bottom: 20px;">Download from the Chrome Web Store and start saving time!</p>
-            <a href="https://chromewebstore.google.com/detail/youtube-description-edito/mcgdmmehedhgblbakhpncbeegohadmlm" class="cta-button">
-                Install Extension
-            </a>
-        </section>
-    </div>
-
-    <footer class="footer">
-        <p>© 2026 VidScribe by Omotout. All rights reserved.</p>
-        <div class="footer-links">
-            <a href="privacy-policy.html">Privacy Policy</a>
-            <a href="https://chromewebstore.google.com/detail/youtube-description-edito/mcgdmmehedhgblbakhpncbeegohadmlm">Chrome Web Store</a>
+      <!-- Mock UI preview -->
+      <div class="mock" aria-hidden="true">
+        <div class="mock-bar">
+          <span class="mock-dot"></span>
+          <span class="mock-dot"></span>
+          <span class="mock-dot"></span>
         </div>
-    </footer>
+        <div class="mock-body">
+          <div class="mock-side">
+            <div class="mock-row active"></div>
+            <div class="mock-row"></div>
+            <div class="mock-row"></div>
+            <div class="mock-row"></div>
+            <div class="mock-row" style="height:14px;opacity:.4"></div>
+            <div class="mock-row"></div>
+            <div class="mock-row"></div>
+          </div>
+          <div class="mock-main">
+            <div class="mock-card selected">
+              <div class="mock-thumb"></div>
+              <div>
+                <div class="mock-title"></div>
+                <div class="mock-sub"></div>
+              </div>
+              <span class="mock-chip">3 件</span>
+            </div>
+            <div class="mock-card selected">
+              <div class="mock-thumb"></div>
+              <div>
+                <div class="mock-title" style="width:60%"></div>
+                <div class="mock-sub"></div>
+              </div>
+              <span class="mock-chip">1 件</span>
+            </div>
+            <div class="mock-card">
+              <div class="mock-thumb"></div>
+              <div>
+                <div class="mock-title" style="width:80%"></div>
+                <div class="mock-sub"></div>
+              </div>
+              <span class="mock-chip" style="background:var(--vs-surface-3);color:var(--vs-text-subtle)">—</span>
+            </div>
+            <div class="mock-card">
+              <div class="mock-thumb"></div>
+              <div>
+                <div class="mock-title" style="width:55%"></div>
+                <div class="mock-sub"></div>
+              </div>
+              <span class="mock-chip">2 件</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features" class="block">
+    <div class="container">
+      <div class="block-eyebrow">主な機能</div>
+      <h2 class="block-h2">概要欄まわりの面倒、ぜんぶここで終わらせる</h2>
+      <p class="block-lede">
+        個別編集を 1 本ずつ繰り返してた作業を、選択 → ルール指定 → 適用の 3 ステップに圧縮します。
+      </p>
+      <div class="features">
+
+        <div class="feature">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4l-3 3 3 3M4 7h13a4 4 0 014 4M17 20l3-3-3-3M20 17H7a4 4 0 01-4-4"/></svg>
+          </div>
+          <h3>一括置換・追加・削除</h3>
+          <p>選択した動画の概要欄やタイトルに対して、文字列置換・末尾追加・先頭追加をまとめて実行。タイトルにも対応。</p>
+        </div>
+
+        <div class="feature">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>
+          </div>
+          <h3>テンプレート + 変数</h3>
+          <p><code class="vs-mono" style="font-size:11px">{title}</code> <code class="vs-mono" style="font-size:11px">{url}</code> <code class="vs-mono" style="font-size:11px">{publishedYear}</code> など動画ごとに展開される変数つきテンプレを保存・再利用。</p>
+        </div>
+
+        <div class="feature">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+          <h3>差分プレビュー</h3>
+          <p>適用前に全動画の変更前 / 変更後を Before / After で全件確認。一致箇所は緑、削除箇所は赤でハイライト。</p>
+        </div>
+
+        <div class="feature">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 109-9 9 9 0 00-9 9z"/><path d="M3 12H1m11-7v7l4 2M3 12a9 9 0 0115-6.7l3-3"/></svg>
+          </div>
+          <h3>実行履歴 + ワンクリック復元</h3>
+          <p>適用前に自動でスナップショット作成。30 日以内ならいつでも履歴から復元できるので、安心して試せる。</p>
+        </div>
+
+        <div class="feature">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 007 0l3-3a5 5 0 00-7-7l-1 1M14 11a5 5 0 00-7 0l-3 3a5 5 0 007 7l1-1M3 3l18 18"/></svg>
+          </div>
+          <h3>リンク切れ検出</h3>
+          <p>全動画の概要欄をスキャンして 404 / 410 のリンクを検出。古いアフィリエイトや旧チャンネル URL の置換に。</p>
+        </div>
+
+        <div class="feature">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+          </div>
+          <h3>API クォータメーター</h3>
+          <p>YouTube Data API の残りクォータを常時表示。「今日あと何件更新できるか」がリアルタイムで分かります。</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section id="how" class="block">
+    <div class="container">
+      <div class="block-eyebrow">使い方</div>
+      <h2 class="block-h2">3 ステップで終わる</h2>
+      <p class="block-lede">
+        インストール後、Google アカウントで認証するだけ。データは全てブラウザ内で処理されます。
+      </p>
+      <div class="steps">
+
+        <div class="step">
+          <h3>動画を絞り込む</h3>
+          <p>期間・キーワード・「特定の文字列を含む」など複数条件で対象動画を絞ってから選択。</p>
+        </div>
+
+        <div class="step">
+          <h3>編集ルールを組む</h3>
+          <p>置換 / 末尾追加 / 先頭追加のモードを選び、必要なら変数チップをドラッグで差し込み。</p>
+        </div>
+
+        <div class="step">
+          <h3>差分を確認して適用</h3>
+          <p>変更前 / 変更後を全件確認。「N 本に適用」を押すだけで自動バックアップ込みで実行。</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section id="pricing" class="block">
+    <div class="container">
+      <div class="block-eyebrow">料金</div>
+      <h2 class="block-h2">まず無料、必要なら Pro</h2>
+      <p class="block-lede">
+        基本機能は無料で使えます。本格的に運用するなら Pro で上限を解除。
+      </p>
+      <div class="plans">
+
+        <div class="plan">
+          <div class="plan-name">Free</div>
+          <div class="plan-price">¥0<small>/月</small></div>
+          <ul>
+            <li>動画選択 最大 5 本まで</li>
+            <li>1 日 10 件まで更新</li>
+            <li>置換パターン 3 種類</li>
+            <li>履歴・自動バックアップ</li>
+          </ul>
+          <a class="btn btn-secondary"
+             href="https://chromewebstore.google.com/detail/youtube-description-edito/mcgdmmehedhgblbakhpncbeegohadmlm">
+            無料で始める
+          </a>
+        </div>
+
+        <div class="plan featured">
+          <span class="plan-tag">RECOMMENDED</span>
+          <div class="plan-name">Pro</div>
+          <div class="plan-price">買い切り<small>(Gumroad)</small></div>
+          <ul>
+            <li>動画選択 <strong>無制限</strong></li>
+            <li>1 日の更新数 <strong>無制限</strong></li>
+            <li>テンプレート <strong>無制限</strong></li>
+            <li>リンク切れスキャン</li>
+            <li>変数つきテンプレート</li>
+          </ul>
+          <a class="btn btn-primary" href="https://omotout.gumroad.com/l/fdvfu">
+            Pro を購入
+            <svg class="arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Privacy -->
+  <section id="privacy" class="block">
+    <div class="container">
+      <div class="block-eyebrow">プライバシー</div>
+      <h2 class="block-h2">あなたのデータはあなたのブラウザに</h2>
+      <div class="privacy-card">
+        <ul>
+          <li>個人情報やチャンネルデータを<strong>外部サーバーに送信しません</strong>。すべてブラウザ内で完結。</li>
+          <li>認証は Google の OAuth 2.0。Google 以外には認証情報を渡しません。</li>
+          <li>YouTube Data API への接続のみで動作し、必要最小限のスコープしか要求しません。</li>
+          <li>変更前のスナップショットも端末ローカルに保存（chrome.storage.local）。</li>
+        </ul>
+        <a class="privacy-link" href="privacy-policy.html">プライバシーポリシー全文を読む →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-block">
+    <div class="container">
+      <h2 class="block-h2">今すぐ、概要欄の運用を楽にする</h2>
+      <p class="block-lede">Chrome Web Store から無料で追加できます。</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary lg"
+           href="https://chromewebstore.google.com/detail/youtube-description-edito/mcgdmmehedhgblbakhpncbeegohadmlm">
+          Chrome に追加 — 無料
+          <svg class="arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div>
+        <span class="made">© 2026 VidScribe</span> · made by
+        <a href="https://omotout.com/" style="color:inherit">Omotout</a>
+      </div>
+      <div class="footer-links">
+        <a href="privacy-policy.html">プライバシーポリシー</a>
+        <a href="https://chromewebstore.google.com/detail/youtube-description-edito/mcgdmmehedhgblbakhpncbeegohadmlm">Chrome Web Store</a>
+        <a href="https://omotout.gumroad.com/l/fdvfu">Pro 版</a>
+      </div>
+    </div>
+  </footer>
+
 </body>
 </html>
