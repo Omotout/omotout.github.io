@@ -6,13 +6,13 @@
   <link rel="canonical" href="https://omotout.com/vidscribe/">
 
   <title>VidScribe — YouTube 概要欄を一括編集する Chrome 拡張</title>
-  <meta name="description" content="YouTube の概要欄・タイトルを一括で置換・追記できる Chrome 拡張機能。リンク切れ検出、テンプレート、変数、差分プレビュー、実行履歴と復元を全部入り。クリエイターの「全動画一括修正」を 1 クリックに。">
+  <meta name="description" content="YouTube の概要欄・タイトル・公開設定を一括で編集できる Chrome 拡張機能。リンク切れ検出、テンプレート、差分プレビュー、実行履歴と復元を全部入り。クリエイターの「全動画一括修正」を 1 クリックに。">
   <meta name="theme-color" content="#E5232C">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="VidScribe — YouTube 概要欄を一括編集する Chrome 拡張">
-  <meta property="og:description" content="概要欄・タイトルの一括置換、変数付きテンプレート、差分プレビュー、ワンクリック復元。クリエイターの定常作業を 10 倍速に。">
+  <meta property="og:description" content="概要欄・タイトル・公開設定の一括変更、テンプレート、差分プレビュー、ワンクリック復元。クリエイターの定常作業を 10 倍速に。">
   <meta property="og:url" content="https://omotout.com/vidscribe/">
   <meta property="og:site_name" content="VidScribe">
   <meta property="og:locale" content="ja_JP">
@@ -20,7 +20,7 @@
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="VidScribe — YouTube 概要欄を一括編集">
-  <meta name="twitter:description" content="概要欄・タイトルの一括置換、変数付きテンプレート、差分プレビュー、ワンクリック復元。">
+  <meta name="twitter:description" content="概要欄・タイトル・公開設定の一括変更、テンプレート、差分プレビュー、ワンクリック復元。">
 
   <!-- 構造化データ -->
   <script type="application/ld+json">
@@ -32,7 +32,7 @@
     "applicationCategory": "BrowserApplication",
     "operatingSystem": "Chrome",
     "url": "https://omotout.com/vidscribe/",
-    "description": "YouTube の概要欄・タイトルを一括で置換・追記できる Chrome 拡張機能。テンプレート、変数、差分プレビュー、実行履歴を備える。",
+    "description": "YouTube の概要欄・タイトル・公開設定を一括で編集できる Chrome 拡張機能。テンプレート、差分プレビュー、実行履歴を備える。",
     "offers": {
       "@type": "Offer",
       "price": "0",
@@ -611,8 +611,8 @@
       <span class="hero-eyebrow">Chrome 拡張機能 · v1.0.7</span>
       <h1>YouTube の概要欄を<br><span class="accent">1 クリックで一括編集</span></h1>
       <p class="hero-lede">
-        全動画の概要欄やタイトルを、置換・追加・削除で一気に整える。
-        テンプレートと変数で「次の動画にも使い回せる」フォーマットを資産化。
+        全動画の概要欄・タイトル・公開設定を、置換・追加・削除でまとめて整える。
+        よく使う定型文はテンプレートとして保存・再利用。
         実行前の差分プレビュー＋自動スナップショットで、ミスしても 30 日以内なら戻せます。
       </p>
       <div class="hero-actions">
@@ -702,8 +702,8 @@
           <div class="feature-icon">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>
           </div>
-          <h3>テンプレート + 変数</h3>
-          <p><code class="vs-mono" style="font-size:11px">{title}</code> <code class="vs-mono" style="font-size:11px">{url}</code> <code class="vs-mono" style="font-size:11px">{publishedYear}</code> など動画ごとに展開される変数つきテンプレを保存・再利用。</p>
+          <h3>テンプレート</h3>
+          <p>定型のスポンサー文・SNS リンク・章立てなど、よく使う文章を保存して呼び出すだけ。使用回数で人気のテンプレが一目で分かります。</p>
         </div>
 
         <div class="feature">
@@ -732,10 +732,10 @@
 
         <div class="feature">
           <div class="feature-icon">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           </div>
-          <h3>API クォータメーター</h3>
-          <p>YouTube Data API の残りクォータを常時表示。「今日あと何件更新できるか」がリアルタイムで分かります。</p>
+          <h3>公開設定の一括変更</h3>
+          <p>選んだ動画の公開設定（公開 / 限定公開 / 非公開）をまとめて切り替え。古い動画の一括非公開化やリリース解禁時にも便利。</p>
         </div>
 
       </div>
@@ -759,7 +759,7 @@
 
         <div class="step">
           <h3>編集ルールを組む</h3>
-          <p>置換 / 末尾追加 / 先頭追加のモードを選び、必要なら変数チップをドラッグで差し込み。</p>
+          <p>置換 / 末尾追加 / 先頭追加のモードを選んで内容を入力。保存済みテンプレートから読み込みも可能。</p>
         </div>
 
         <div class="step">
@@ -805,7 +805,7 @@
             <li>1 日の更新数 <strong>無制限</strong></li>
             <li>テンプレート <strong>無制限</strong></li>
             <li>リンク切れスキャン</li>
-            <li>変数つきテンプレート</li>
+            <li>公開設定の一括変更</li>
           </ul>
           <a class="btn btn-primary" href="https://omotout.gumroad.com/l/fdvfu">
             Pro を購入
